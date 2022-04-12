@@ -2,7 +2,7 @@
 
 Challenging project from Vue. This is a project of my own that challenges my skills and new learnings.
 
-# Buid with
+# Build with
 
-- Backend: Laravel
-- Frontend: Vue JS
+- Backend: Laravel 9
+- Frontend: Vue JS 3
