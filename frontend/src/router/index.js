@@ -2,6 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginPage from "../views/pages/Login.vue";
 import RegisterPage from "../views/pages/Register.vue";
+import DashboardPage from "../views/pages/Dashboard.vue";
+import { authStore } from "../stores/auth";
+
+const redirectToHomeOnLoggedIn = (to, from, next) => {
+  if (authStore().loggedIn) next({ name: "index" });
+  else next();
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,8 +35,25 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: RegisterPage,
+    },
+    {
+      path: "/dashboard",
+      name: "dashboard",
+      component: DashboardPage,
+      beforeEnter: (to, from, next) => {
+        if (authStore().loggedIn) next({ name: "dashboard" });
+        else if (!to.query.email || !to.query.token)
+          next({ name: "login" });
+        else next();
+      },
     }
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth && !authStore().loggedIn)
+    next({ name: "login" });
+  else next();
 });
 
 export default router;

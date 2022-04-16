@@ -11,7 +11,7 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form>
+            <form v-on:submit.prevent="onSubmit">
               <div
                 class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
               >
@@ -40,6 +40,7 @@
                   id="form3Example3"
                   class="form-control form-control-lg"
                   placeholder="Enter a valid email address"
+                  v-model="credentials.email"
                 />
                 <label class="form-label" for="form3Example3">Email address</label>
               </div>
@@ -51,6 +52,7 @@
                   id="form3Example4"
                   class="form-control form-control-lg"
                   placeholder="Enter password"
+                  v-model="credentials.password"
                 />
                 <label class="form-label" for="form3Example4">Password</label>
               </div>
@@ -63,6 +65,7 @@
                     type="checkbox"
                     value=""
                     id="form2Example3"
+                    v-model="credentials.remember_me"
                   />
                   <label class="form-check-label" for="form2Example3">
                     Remember me
@@ -73,12 +76,21 @@
 
               <div class="text-center text-lg-start mt-4 pt-2">
                 <button
-                  type="button"
+                  type="submit"
+                  :disabled="loading"
                   class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                 >
-                  Login
+                  <div
+                    v-if="loading"
+                    class="spinner-border mx-3 spinner-border-sm"
+                    role="status"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <span v-else>Login</span>
                 </button>
+
                 <p class="small fw-bold mt-2 pt-1 mb-0">
                   Don't have an account?
                   <RouterLink to="/register" class="link-danger">Sign-up</RouterLink>
@@ -92,16 +104,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Test",
-  created() {},
-  data() {
-    return {};
-  },
-  props: {},
-  methods: {},
+<script setup>
+import { ref, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+import { authStore } from "../../stores/auth";
+import { errorStore } from "../../stores/error";
+
+const loading = ref(false);
+const credentials = ref({});
+const router = useRouter();
+const auth = authStore();
+const error = errorStore();
+
+const onSubmit = () => {
+  loading.value = !loading.value;
+
+  authStore()
+    .login(credentials.value)
+    .then(() => router.push({ name: "index" }))
+    .catch(() => (loading.value = !loading.value));
 };
+
+onBeforeUnmount(() => error.$reset());
 </script>
 
 <style lang="scss" scoped></style>
