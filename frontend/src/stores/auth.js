@@ -24,6 +24,20 @@ export const authStore = defineStore("auth", {
                 await this.ftechUser();
             }
         },
+        async register(credentials) {
+            await axios.get("sanctum/csrf-cookie");
+
+            const response = (await axios.post("api/v1/auth/register", credentials)).data;
+
+            if (response) {
+                const token = `Bearer ${response.auth_data.access_token}`;
+
+                localStorage.setItem("token", token);
+                axios.defaults.headers.common["Authorization"] = token;
+
+                await this.ftechUser();
+            }
+        },
 
         async logout() {
             const response = (await axios.post("api/v1/auth/logout")).data;

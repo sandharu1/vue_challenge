@@ -15,8 +15,8 @@
               <div
                 class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
               >
-                <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-                <button type="button" class="btn btn-primary btn-floating mx-1">
+                <h2 class="lead fw-normal mb-6 me-3">Sign in</h2>
+                <!-- <button type="button" class="btn btn-primary btn-floating mx-1">
                   <i class="fab fa-facebook-f"></i>
                 </button>
 
@@ -26,23 +26,23 @@
 
                 <button type="button" class="btn btn-primary btn-floating mx-1">
                   <i class="fab fa-linkedin-in"></i>
-                </button>
+                </button> -->
               </div>
 
-              <div class="divider d-flex align-items-center my-4">
+              <!-- <div class="divider d-flex align-items-center my-4">
                 <p class="text-center fw-bold mx-3 mb-0">Or</p>
-              </div>
+              </div> -->
 
               <!-- Email input -->
               <div class="form-outline mb-4">
                 <input
                   type="email"
-                  id="form3Example3"
+                  id="form3Example1"
                   class="form-control form-control-lg"
                   placeholder="Enter a valid email address"
                   v-model="credentials.email"
                 />
-                <label class="form-label" for="form3Example3">Email address</label>
+                <label class="form-label" for="form3Example1">Email address</label>
               </div>
 
               <!-- Password input -->
@@ -64,10 +64,10 @@
                     class="form-check-input me-2"
                     type="checkbox"
                     value=""
-                    id="form2Example3"
+                    id="form2Example2"
                     v-model="credentials.remember_me"
                   />
-                  <label class="form-check-label" for="form2Example3">
+                  <label class="form-check-label" for="form2Example2">
                     Remember me
                   </label>
                 </div>

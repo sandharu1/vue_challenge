@@ -11,7 +11,7 @@
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form v-on:submit.prevent="onRegister">
+            <form v-on:submit.prevent="onSubmit">
               <div
                 class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
               >
@@ -22,12 +22,12 @@
               <div class="form-outline mb-4">
                 <input
                   type="text"
-                  id="form3Example3"
+                  id="form3Example2"
                   class="form-control form-control-lg"
                   placeholder="Enter your full name"
-                  v-model="user_data.name"
+                  v-model="credentials.name"
                 />
-                <label class="form-label" for="form3Example3">Full name</label>
+                <label class="form-label" for="form3Example2">Full name</label>
               </div>
 
               <!-- Email input -->
@@ -37,7 +37,7 @@
                   id="form3Example3"
                   class="form-control form-control-lg"
                   placeholder="Enter a valid email address"
-                  v-model="user_data.email"
+                  v-model="credentials.email"
                 />
                 <label class="form-label" for="form3Example3">Email address</label>
               </div>
@@ -49,7 +49,7 @@
                   id="form3Example4"
                   class="form-control form-control-lg"
                   placeholder="Enter password"
-                  v-model="user_data.password"
+                  v-model="credentials.password"
                 />
                 <label class="form-label" for="form3Example4">Password</label>
               </div>
@@ -57,16 +57,16 @@
               <div class="form-outline mb-3">
                 <input
                   type="password"
-                  id="form3Example4"
+                  id="form3Example5"
                   class="form-control form-control-lg"
                   placeholder="Enter password again"
-                  v-model="user_data.confirm_password"
+                  v-model="credentials.password_confirmation"
                 />
-                <label class="form-label" for="form3Example4">Confirm Password</label>
+                <label class="form-label" for="form3Example5">Confirm Password</label>
               </div>
 
               <div class="col-sm-12">
-                <pre>{{ user_data }}</pre>
+                <pre>{{ credentials }}</pre>
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
@@ -90,27 +90,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Test",
-  created() {},
-  data() {
-    return {
-      user_data: {
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        confirm_password: this.confirm_password,
-      },
-    };
-  },
-  props: {},
-  methods: {
-    onRegister: function () {
-      console.log(this.user_data.name);
-    },
-  },
+<script setup>
+import { ref, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+import { authStore } from "../../stores/auth";
+import { errorStore } from "../../stores/error";
+
+const loading = ref(false);
+const credentials = ref({});
+const router = useRouter();
+const auth = authStore();
+const error = errorStore();
+
+const onSubmit = () => {
+  loading.value = !loading.value;
+
+  authStore()
+    .register(credentials.value)
+    .then(() => router.push({ name: "dashboard" }))
+    .catch(() => (loading.value = !loading.value));
 };
+
+onBeforeUnmount(() => error.$reset());
 </script>
 
 <style lang="scss" scoped></style>
