@@ -3,6 +3,7 @@
 namespace App\Api\V1\Controllers\Auth;
 
 use App\Api\V1\Requests\LoginRequest;
+use App\Events\LoggedIn;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,6 +23,13 @@ class LoginController extends Controller
             }
 
             $tokenData = auth()->user()->createToken("API-VC");
+
+            //call logged-in event
+            try {
+                LoggedIn::dispatch(auth()->user());
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
 
             return response()->json([
                 'status' => 'success',
