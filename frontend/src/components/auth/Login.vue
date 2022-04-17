@@ -121,7 +121,7 @@ const onSubmit = () => {
 
   authStore()
     .login(credentials.value)
-    .then(() => router.push({ name: "index" }))
+    .then(() => router.push({ name: "dashboard" }))
     .catch(() => (loading.value = !loading.value));
 };
 

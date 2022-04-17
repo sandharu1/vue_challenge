@@ -1,3 +1,6 @@
+<script setup>
+import { authStore } from "../../stores/auth";
+</script>
 <template>
   <div>
     <div class="container">
@@ -28,8 +31,22 @@
         </ul>
 
         <div class="col-md-3 text-end">
-          <RouterLink to="/login" class="btn btn-outline-primary me-2">Login</RouterLink>
-          <RouterLink to="/register" class="btn btn-outline-primary me-2"
+          <RouterLink
+            to="/login"
+            class="btn btn-outline-primary me-2"
+            v-if="!authStore().loggedIn"
+            >Login</RouterLink
+          >
+          <RouterLink
+            to="/logout"
+            class="btn btn-outline-primary me-2"
+            v-if="authStore().loggedIn"
+            >Logout</RouterLink
+          >
+          <RouterLink
+            to="/register"
+            class="btn btn-outline-primary me-2"
+            v-if="!authStore().loggedIn"
             >Sign-up</RouterLink
           >
         </div>
@@ -37,17 +54,5 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "Test",
-  created() {},
-  data() {
-    return {};
-  },
-  props: {},
-  methods: {},
-};
-</script>
 
 <style lang="scss" scoped></style>

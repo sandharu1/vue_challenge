@@ -4,9 +4,17 @@ import LoginPage from "../views/pages/Login.vue";
 import RegisterPage from "../views/pages/Register.vue";
 import DashboardPage from "../views/pages/Dashboard.vue";
 import { authStore } from "../stores/auth";
+import LogoutPage from "../views/pages/logout.vue";
 
 const redirectToHomeOnLoggedIn = (to, from, next) => {
-  if (authStore().loggedIn) next({ name: "index" });
+  console.log(from);
+  if (authStore().loggedIn) next({ name: "dashboard" });
+  else next();
+};
+
+const redirectToLoginNotOnLoggedIn = (to, from, next) => {
+  console.log(from);
+  if (!authStore().loggedIn) next({ name: "login" });
   else next();
 };
 
@@ -17,6 +25,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      beforeEnter: redirectToHomeOnLoggedIn,
     },
     {
       path: "/about",
@@ -30,22 +39,25 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginPage,
+      beforeEnter: redirectToHomeOnLoggedIn,
     },
     {
       path: "/register",
       name: "register",
       component: RegisterPage,
+      beforeEnter: redirectToHomeOnLoggedIn,
     },
     {
       path: "/dashboard",
       name: "dashboard",
       component: DashboardPage,
-      beforeEnter: (to, from, next) => {
-        if (authStore().loggedIn) next({ name: "dashboard" });
-        else if (!to.query.email || !to.query.token)
-          next({ name: "login" });
-        else next();
-      },
+      beforeEnter: redirectToLoginNotOnLoggedIn,
+    },
+    {
+      path: "/logout",
+      name: "logout",
+      component: LogoutPage,
+      beforeEnter: redirectToLoginNotOnLoggedIn,
     }
   ],
 });
