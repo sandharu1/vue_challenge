@@ -89,6 +89,9 @@ export default {
       city_temps,
       offset,
       sortBy,
+      formatTimestamp,
+      sortTempDataBy,
+      paginatedData,
     };
   },
 };

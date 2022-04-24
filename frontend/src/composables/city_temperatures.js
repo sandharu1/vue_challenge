@@ -15,33 +15,33 @@ export default function useCityTemp() {
 
     const fetchCities = async () => {
         let response = await axios.get('/api/v1/city_temp/fetch_cities')
-        cities = response.data.data;
-        cities.forEach((element) => {
-            this.fetchTempData(element.slug, "created_at");
+        cities.value = response.data.data;
+        cities.value.forEach((element) => {
+            fetchTempData(element.slug, "created_at");
         });
     }
 
     const fetchTempData = async (city_slug, sort_by, pageNum) => {
         let response = await axios.get(`/api/v1/city_temp/fetch_temperatures?city_slug=${city_slug}&sort_by=${sort_by}&page=${pageNum}`)
-        this.pagination = response.data.pagination;
-        this.city_temps[city_slug] = response.data.cityTempData;
+        pagination.value = response.data.pagination;
+        city_temps[city_slug] = response.data.cityTempData;
 
     }
 
     const paginatedData = function () {
-        this.cities.forEach((element) => {
-            this.fetchTempData(element.slug, this.sortBy);
+        cities.value.forEach((element) => {
+            fetchTempData(element.slug, this.sortBy);
         });
     }
 
     const sortTempDataBy = function (sort_by) {
         // reset pagination
-        this.pagination.current_page = 1;
+        pagination.value.current_page = 1;
         //update sort by value
-        this.sortBy = sort_by;
+        sortBy.value = sort_by;
         // fetch sorted data by city
-        this.cities.forEach((element) => {
-            this.fetchTempData(element.slug, sort_by);
+        cities.value.forEach((element) => {
+            fetchTempData(element.slug, sort_by);
         });
     }
 
