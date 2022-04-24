@@ -1,35 +1,34 @@
 <template>
-  <ul class="flex list-reset border border-grey-light rounded w-auto font-sans">
-    <li v-if="pagination.current_page > 1">
-      <a
-        class="block hover:text-white hover:bg-blue-900 text-blue border-r border-grey-light px-3 py-2"
-        @click.prevent="change(pagination.current_page - 1)"
-      >
-        Previous
-      </a>
-    </li>
-    <li v-for="page in pages" :key="page">
-      <a
-        :class="[
-          page == pagination.current_page
-            ? 'text-white bg-blue-900 border-r border-blue'
-            : 'hover:text-white hover:bg-blue-900 text-blue border-r border-grey-light',
-          'block px-3 py-2',
-        ]"
-        @click.stop="change(page)"
-      >
-        {{ page }}
-      </a>
-    </li>
-    <li v-if="pagination.current_page < pagination.last_page">
-      <a
-        class="block hover:text-white hover:bg-blue-900 text-blue px-3 py-2"
-        @click.prevent="change(pagination.current_page + 1)"
-      >
-        Next
-      </a>
-    </li>
-  </ul>
+  <div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" v-if="pagination.current_page > 1">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li
+          v-for="page in pages"
+          :key="page"
+          :class="[page == pagination.current_page ? 'active' : '', 'page-item']"
+        >
+          <a class="page-link" href="#" @click.stop="change(page)">{{ page }}</a>
+        </li>
+        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+        <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click.prevent="change(pagination.current_page + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>
