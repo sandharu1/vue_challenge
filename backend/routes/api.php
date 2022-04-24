@@ -2,6 +2,7 @@
 
 use App\Api\V1\Controllers\Auth\LoginController;
 use App\Api\V1\Controllers\Auth\RegisterController;
+use App\Api\V1\Controllers\CityTempController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,5 +30,9 @@ Route::prefix('v1')->group(function () {
 
 
         Route::post('/auth/logout', [LoginController::class, 'logout']);
+
+        Route::get('/city_temp/fetch_cities', [CityTempController::class, 'getCities']);
+
+        Route::get('/city_temp/fetch_temperatures', [CityTempController::class, 'getCityTemperatures']);
     });
 });

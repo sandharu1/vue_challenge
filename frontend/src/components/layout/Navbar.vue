@@ -24,8 +24,11 @@ import { authStore } from "../../stores/auth";
           <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
           <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
           <li>
-            <RouterLink to="/about" class="nav-link px-2 link-secondary"
-              >About</RouterLink
+            <RouterLink to="/" class="nav-link px-2 link-secondary">Home</RouterLink>
+          </li>
+          <li v-if="authStore().loggedIn">
+            <RouterLink to="/city-temp" class="nav-link px-2 link-secondary"
+              >City Temperatures</RouterLink
             >
           </li>
         </ul>

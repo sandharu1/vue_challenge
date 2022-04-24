@@ -5,6 +5,7 @@ import RegisterPage from "../views/pages/Register.vue";
 import DashboardPage from "../views/pages/Dashboard.vue";
 import { authStore } from "../stores/auth";
 import LogoutPage from "../views/pages/logout.vue";
+import CityTempPage from "../views/pages/CityTemperatures.vue";
 
 const redirectToHomeOnLoggedIn = (to, from, next) => {
   console.log(from);
@@ -57,6 +58,12 @@ const router = createRouter({
       path: "/logout",
       name: "logout",
       component: LogoutPage,
+      beforeEnter: redirectToLoginNotOnLoggedIn,
+    },
+    {
+      path: "/city-temp",
+      name: "city-temp",
+      component: CityTempPage,
       beforeEnter: redirectToLoginNotOnLoggedIn,
     }
   ],
