@@ -61,74 +61,35 @@
 
 <script>
 import Pagination from "@/Components/DataTablePagination.vue";
-import axios from "axios";
-import moment from "moment";
+import useCityTemp from "../composables/city_temperatures";
+import { onMounted } from "vue";
 
 export default {
-  data() {
+  setup() {
+    const {
+      errors,
+      cities,
+      pagination,
+      city_temps,
+      offset,
+      sortBy,
+      fetchCities,
+      fetchTempData,
+      paginatedData,
+      sortTempDataBy,
+      formatTimestamp,
+    } = useCityTemp();
+
+    onMounted(fetchCities);
+
     return {
-      cities: {},
-      offset: 4,
-      pagination: {},
-      city_temps: {},
-      sortBy: "created_at",
+      errors,
+      cities,
+      pagination,
+      city_temps,
+      offset,
+      sortBy,
     };
   },
-  components: {
-    pagination: Pagination,
-  },
-  mounted() {
-    this.fetchCities();
-  },
-  methods: {
-    fetchTempData: function (city_slug, sort_by) {
-      let current_page = this.pagination.current_page;
-      let pageNum = current_page ? current_page : 1;
-
-      axios
-        .get(
-          `/api/v1/city_temp/fetch_temperatures?city_slug=${city_slug}&sort_by=${sort_by}&page=${pageNum}`
-        )
-        .then((result) => {
-          this.pagination = result.data.pagination;
-          this.city_temps[city_slug] = result.data.cityTempData;
-        })
-        .catch((err) => {
-          console.error();
-        });
-    },
-    fetchCities() {
-      axios
-        .get(`/api/v1/city_temp/fetch_cities`)
-        .then((result) => {
-          this.cities = result.data.data;
-          this.cities.forEach((element) => {
-            this.fetchTempData(element.slug, "created_at");
-          });
-        })
-        .catch((err) => {
-          console.error();
-        });
-    },
-    paginatedData: function () {
-      this.cities.forEach((element) => {
-        this.fetchTempData(element.slug, this.sortBy);
-      });
-    },
-    sortTempDataBy: function (sort_by) {
-      // reset pagination
-      this.pagination.current_page = 1;
-      //update sort by value
-      this.sortBy = sort_by;
-      // fetch sorted data by city
-      this.cities.forEach((element) => {
-        this.fetchTempData(element.slug, sort_by);
-      });
-    },
-    formatTimestamp: function (value) {
-      return moment(value).format("ddd, DD MMMM YYYY, h:mm a");
-    },
-  },
-  created() {},
 };
 </script>
