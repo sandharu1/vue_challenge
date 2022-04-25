@@ -22,15 +22,17 @@ export default function useCityTemp() {
     }
 
     const fetchTempData = async (city_slug, sort_by, pageNum) => {
+        let current_page = pagination.value.current_page;
+        pageNum = current_page ? current_page : 1;
         let response = await axios.get(`/api/v1/city_temp/fetch_temperatures?city_slug=${city_slug}&sort_by=${sort_by}&page=${pageNum}`)
         pagination.value = response.data.pagination;
-        city_temps[city_slug] = response.data.cityTempData;
+        city_temps.value[city_slug] = response.data.cityTempData;
 
     }
 
     const paginatedData = function () {
         cities.value.forEach((element) => {
-            fetchTempData(element.slug, this.sortBy);
+            fetchTempData(element.slug, sortBy.value);
         });
     }
 

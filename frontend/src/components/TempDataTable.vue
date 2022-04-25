@@ -65,6 +65,9 @@ import useCityTemp from "../composables/city_temperatures";
 import { onMounted } from "vue";
 
 export default {
+  components: {
+    pagination: Pagination,
+  },
   setup() {
     const {
       errors,
