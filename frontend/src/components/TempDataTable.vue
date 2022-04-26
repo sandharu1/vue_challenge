@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-10"></div>
-      <div class="col-sm-1">
+      <div class="col-sm-8"></div>
+      <div class="col-sm-2">
         <button
           type="button"
           class="btn btn-sm btn-primary mb-4"
@@ -11,7 +11,7 @@
           Reset Order
         </button>
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-2">
         <button
           type="button"
           class="btn btn-sm btn-danger mb-4"
